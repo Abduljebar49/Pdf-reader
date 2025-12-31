@@ -10,11 +10,15 @@ type ScrollMode = "vertical" | "horizontal" | "horizontal-single";
 
 interface PDFViewerProps {
   scrollMode?: ScrollMode;
+  pdfUrl?: string; // Add this prop
 }
 
-const PDFViewer = ({ scrollMode: initialScrollMode }: PDFViewerProps) => {
+const PDFViewer = ({
+  scrollMode: initialScrollMode,
+  pdfUrl,
+}: PDFViewerProps) => {
   const canvasRef = useRef<HTMLCanvasElement[]>([]);
-  // containerRef is the outer wrapper, scrollContainerRef is the one that actually scrolls
+
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const pageContainerRef = useRef<HTMLDivElement>(null);
@@ -41,7 +45,34 @@ const PDFViewer = ({ scrollMode: initialScrollMode }: PDFViewerProps) => {
   const maxZoom = 3.0;
   const PAGE_GAP = 40; // Standardized gap between pages
 
-  // Calculate dimensions
+  useEffect(() => {
+    if (pdfUrl) {
+      loadPdfFromUrl(pdfUrl);
+    }
+  }, [pdfUrl]);
+
+  const loadPdfFromUrl = async (url: string) => {
+    try {
+      setIsLoading(true);
+      setFileName(url.split("/").pop() || "Document.pdf");
+      const loadedPdf = await pdfjsLib.getDocument({
+        url: url,
+        cMapUrl: "https://unpkg.com/pdfjs-dist@3.11.174/cmaps/",
+        cMapPacked: true,
+      }).promise;
+
+      setPdfDoc(loadedPdf);
+      setPagesToRender(
+        Array.from({ length: loadedPdf.numPages }, (_, i) => i + 1)
+      );
+      await calculateDimensions();
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error loading PDF from URL:", error);
+      setIsLoading(false);
+    }
+  };
+
   const calculateDimensions = useCallback(async () => {
     if (!pdfDoc) return;
 
@@ -53,6 +84,7 @@ const PDFViewer = ({ scrollMode: initialScrollMode }: PDFViewerProps) => {
     }
     setPageDimensions(dimensions);
   }, [pdfDoc]);
+
 
   // Calculate scale for fit modes
   const calculateFitScale = useCallback(() => {
@@ -176,12 +208,11 @@ const PDFViewer = ({ scrollMode: initialScrollMode }: PDFViewerProps) => {
     setIsScrolling(true); // Lock scroll listener
 
     let targetPosition = 0;
-    const initialPadding = 24; // p-6 is 24px
 
     if (scrollMode === "vertical") {
       // Sum height of all previous pages + gaps
       for (let i = 0; i < pageNumber - 1; i++) {
-        targetPosition += (pageDimensions[i].height * scale) + PAGE_GAP;
+        targetPosition += pageDimensions[i].height * scale + PAGE_GAP;
       }
       container.scrollTo({
         top: targetPosition, // Removed initialPadding to align top exactly
@@ -190,7 +221,7 @@ const PDFViewer = ({ scrollMode: initialScrollMode }: PDFViewerProps) => {
     } else if (scrollMode === "horizontal") {
       // Sum width of all previous pages + gaps
       for (let i = 0; i < pageNumber - 1; i++) {
-        targetPosition += (pageDimensions[i].width * scale) + PAGE_GAP;
+        targetPosition += pageDimensions[i].width * scale + PAGE_GAP;
       }
       container.scrollTo({
         left: targetPosition,
@@ -220,8 +251,8 @@ const PDFViewer = ({ scrollMode: initialScrollMode }: PDFViewerProps) => {
     if (scrollMode === "vertical") {
       const scrollTop = container.scrollTop;
       const containerHeight = container.clientHeight;
-      let accumulatedHeight = 0; 
-      
+      let accumulatedHeight = 0;
+
       for (let i = 0; i < pageDimensions.length; i++) {
         const pageHeight = pageDimensions[i].height * scale;
         // Check if the middle of the viewport intersects this page
@@ -255,7 +286,7 @@ const PDFViewer = ({ scrollMode: initialScrollMode }: PDFViewerProps) => {
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container || scrollMode === "horizontal-single") return;
-    
+
     // Use passive listener for better performance
     container.addEventListener("scroll", handleScroll, { passive: true });
     return () => container.removeEventListener("scroll", handleScroll);
@@ -303,7 +334,7 @@ const PDFViewer = ({ scrollMode: initialScrollMode }: PDFViewerProps) => {
     const currentIndex = modes.indexOf(scrollMode);
     const nextMode = modes[(currentIndex + 1) % modes.length];
     setScrollMode(nextMode);
-    // Reset to page 1 or stay on current page but re-align? 
+    // Reset to page 1 or stay on current page but re-align?
     // Usually easier to trigger a scroll to current page after mode switch:
     setTimeout(() => scrollToPage(currentPage), 100);
   };
@@ -484,14 +515,6 @@ const PDFViewer = ({ scrollMode: initialScrollMode }: PDFViewerProps) => {
                         }}
                         className="w-full h-full block bg-white"
                       />
-
-                      <div
-                        className={`absolute -bottom-8 w-full text-center ${
-                          darkMode ? "text-gray-400" : "text-gray-600"
-                        } text-xs font-mono`}
-                      >
-                        Page {currentPage} of {pdfDoc?.numPages || 0}
-                      </div>
                     </div>
                   ) : (
                     // Multi-page view
@@ -518,10 +541,6 @@ const PDFViewer = ({ scrollMode: initialScrollMode }: PDFViewerProps) => {
                           }}
                           className="w-full h-full block bg-white"
                         />
-
-                        <div className="absolute -bottom-8 w-full text-center text-gray-500 text-xs font-mono">
-                          {pageNum}
-                        </div>
                       </div>
                     ))
                   )}
