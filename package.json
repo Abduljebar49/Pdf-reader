@@ -1,25 +1,55 @@
 {
-  "name": "pdf-tester",
+  "name": "@abduljebar/pdf-reader",
   "private": true,
-  "version": "0.0.0",
+  "description": "A customizable PDF viewer component for React",
+  "version": "0.0.1",
   "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "style": "./dist/index.css",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./dist/index.css": "./dist/index.css",
+    "./style.css": "./dist/index.css"
+  },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc && vite build && npm run build:types",
+    "build:types": "tsc --emitDeclarationOnly",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "dependencies": {
     "@react-pdf-viewer/core": "^3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",
     "@react-pdf-viewer/scroll-mode": "^3.12.0",
+    "@react-pdf-viewer/thumbnail": "^3.12.0",
+    "@react-pdf-viewer/toolbar": "^3.12.0",
+    "@react-pdf-viewer/zoom": "^3.12.0",
+    "@react-pdf-viewer/search": "^3.12.0",
+    "@react-pdf-viewer/page-navigation": "^3.12.0",
+    "@react-pdf-viewer/open": "^3.12.0",
+    "@react-pdf-viewer/print": "^3.12.0",
+    "@react-pdf-viewer/download": "^3.12.0",
+    "@react-pdf-viewer/theme": "^3.12.0",
+    "@react-pdf-viewer/selection-mode": "^3.12.0",
     "@tailwindcss/vite": "^4.1.18",
     "lucide-react": "^0.562.0",
-    "pdfjs-dist": "^5.4.394",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-pdf": "^10.2.0",
-    "tailwindcss": "^4.1.18"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -34,5 +64,22 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"
+  },
+  "keywords": [
+    "pdf",
+    "viewer",
+    "react",
+    "component",
+    "document",
+    "preview"
+  ],
+  "author": "Abduljebar Sani",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abduljebar49/Pdf-reader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abduljebar49/Pdf-reader/issues"
   }
 }

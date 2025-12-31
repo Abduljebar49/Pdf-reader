@@ -497,14 +497,14 @@ const PDFViewer = ({
                     // Single page view - only show current page
                     <div
                       key={currentPage}
-                      className="relative h-full w-full shadow-2xl transition-all shrink-0 ring-4 ring-blue-500/50"
+                      className="flex h-full w-full shadow-2xl transition-all shrink-0 ring-4 ring-blue-500/50"
                       style={{
                         width: `${
-                          (pageDimensions[currentPage - 1]?.width || 600) *
+                          (pageDimensions[currentPage - 1]?.width || 800) *
                           scale
                         }px`,
                         height: `${
-                          (pageDimensions[currentPage - 1]?.height || 800) *
+                          (pageDimensions[currentPage - 1]?.height || 1000) *
                           scale
                         }px`,
                       }}

@@ -87,38 +87,8 @@ const Toolbar: FC<ToolbarProps> = ({
 
   return (
     <div className={`flex flex-col ${darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200'} border-b transition-colors duration-200`}>
-      {/* Top row - File operations */}
-      <div className="flex items-center justify-between px-4 py-2">
+      <div className="flex items-center justify-end px-4 py-2">
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg ${darkMode ? 'bg-gray-800 hover:bg-gray-700 text-gray-200' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'} transition-colors`}
-          >
-            <File size={16} />
-            Open PDF
-          </button>
-          <input type="file" ref={fileInputRef} className="hidden" accept="application/pdf" onChange={handleFileChange} />
-          
-          <div className="flex items-center gap-2 text-sm">
-            <span className={`px-3 py-1 rounded ${darkMode ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
-              {filePathSpan || "No file selected"}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <form onSubmit={handleSearch} className="relative">
-            <input
-              type="text"
-              placeholder="Search in PDF..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={`pl-10 pr-4 py-2 rounded-lg w-64 ${darkMode ? 'bg-gray-800 text-white placeholder-gray-400' : 'bg-gray-100 text-gray-900 placeholder-gray-500'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            />
-            <Search size={18} className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} />
-          </form>
-
-          {/* Scroll Mode Toggle */}
           {onToggleScrollMode && (
             <button
               onClick={onToggleScrollMode}
@@ -139,26 +109,9 @@ const Toolbar: FC<ToolbarProps> = ({
         </div>
       </div>
 
-      {/* Bottom row - Navigation and zoom */}
       <div className={`flex items-center justify-between px-4 py-2 ${darkMode ? 'bg-gray-800/50' : 'bg-gray-50'}`}>
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <button
-              onClick={onPrint}
-              className={`p-2 rounded ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-200 text-gray-600'} transition-colors`}
-              title="Print"
-            >
-              <Printer size={18} />
-            </button>
-            <button
-              onClick={onDownload}
-              className={`p-2 rounded ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-200 text-gray-600'} transition-colors`}
-              title="Download"
-            >
-              <Download size={18} />
-            </button>
-
-            {/* FIXED: Removed 'scrollMode === horizontal-single' check. Next/Prev now work for all modes */}
             {onPrevPage && onNextPage && (
               <div className="flex items-center gap-1 ml-4">
                 <button
@@ -181,7 +134,6 @@ const Toolbar: FC<ToolbarProps> = ({
             )}
           </div>
 
-          {/* Page navigation input */}
           {totalPages > 0 && (
             <div className="flex items-center gap-2">
               <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
@@ -235,20 +187,6 @@ const Toolbar: FC<ToolbarProps> = ({
             </button>
             
             <div className="flex items-center gap-1">
-              <select
-                value={Math.round(currentZoom * 100)}
-                onChange={(e) => {
-                  const zoom = parseInt(e.target.value) / 100;
-                  if (onZoomChange) onZoomChange(zoom);
-                }}
-                className={`px-3 py-1 rounded border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
-              >
-                {[25, 50, 75, 100, 125, 150, 200, 300, 400].map((percent) => (
-                  <option key={percent} value={percent}>
-                    {percent}%
-                  </option>
-                ))}
-              </select>
               <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                 {Math.round(currentZoom * 100)}%
               </span>
