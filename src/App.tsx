@@ -1,4 +1,4 @@
-import PDFViewer from "./PdfViewer";
+import PDFViewer from ".";
 
 function App() {
   return (
