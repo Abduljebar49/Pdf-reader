@@ -1,7 +1,7 @@
 // src/components/Toolbar.tsx
 import { type FC, useRef, type ChangeEvent, useState } from "react";
 import { 
-  ZoomIn, ZoomOut, Maximize2, File, Printer, Download, Search, 
+  ZoomIn, ZoomOut, Maximize2,
   Sun, Moon, Grid3x3, Columns, Layout, ChevronLeft, ChevronRight 
 } from "lucide-react";
 
@@ -31,16 +31,12 @@ interface ToolbarProps {
 
 const Toolbar: FC<ToolbarProps> = ({
   onFileSelected,
-  filePathSpan,
   onZoomIn,
   onZoomOut,
   onZoomToFit,
   onZoomToWidth,
-  onZoomChange,
   onZoomToPage,
   currentZoom = 1,
-  onPrint,
-  onDownload,
   onSearch,
   darkMode = false,
   onToggleDarkMode,
