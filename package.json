@@ -1,7 +1,7 @@
 {
   "name": "@abduljebar/pdf-reader",
   "private": false,
-  "version": "0.0.3",
+  "version": "1.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && npm run build:types",
+    "build": "tsc && vite build  --config vite.lib.config.ts && npm run build:types",
     "build:lib": "vite build --config vite.lib.config.ts",
     "build:types": "tsc",
     "lint": "eslint .",
