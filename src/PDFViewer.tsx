@@ -1,22 +1,27 @@
 // src/components/PDFViewer.tsx
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, type FC } from "react";
 import Toolbar from "./Toolbar";
 import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import PageThumbnails from "./PageThumbnails";
 import pdfjsLib from "./pdfWorker";
 
 // Define scroll modes
-type ScrollMode = "vertical" | "horizontal" | "horizontal-single";
+export type ScrollMode =
+  | "vertical"
+  | "horizontal"
+  | "horizontal-single";
 
-interface PDFViewerProps {
+export interface PDFViewerProps {
   scrollMode?: ScrollMode;
-  pdfUrl?: string; // Add this prop
+  pdfUrl?: string;
 }
 
-const PDFViewer = ({
+
+const PDFViewer: FC<PDFViewerProps> = ({
   scrollMode: initialScrollMode,
   pdfUrl,
-}: PDFViewerProps) => {
+}) => {
+
   const canvasRef = useRef<HTMLCanvasElement[]>([]);
 
   const containerRef = useRef<HTMLDivElement>(null);

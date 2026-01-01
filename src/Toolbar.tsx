@@ -1,5 +1,5 @@
 // src/components/Toolbar.tsx
-import { type FC, useRef, type ChangeEvent, useState } from "react";
+import { type FC } from "react";
 import { 
   ZoomIn, ZoomOut, Maximize2,
   Sun, Moon, Grid3x3, Columns, Layout, ChevronLeft, ChevronRight 
@@ -30,14 +30,12 @@ interface ToolbarProps {
 }
 
 const Toolbar: FC<ToolbarProps> = ({
-  onFileSelected,
   onZoomIn,
   onZoomOut,
   onZoomToFit,
   onZoomToWidth,
   onZoomToPage,
   currentZoom = 1,
-  onSearch,
   darkMode = false,
   onToggleDarkMode,
   totalPages = 0,
@@ -48,21 +46,6 @@ const Toolbar: FC<ToolbarProps> = ({
   onPrevPage,
   onNextPage,
 }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && onFileSelected) onFileSelected(file);
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (onSearch && searchQuery.trim()) {
-      onSearch(searchQuery.trim());
-    }
-  };
-
   const getScrollModeIcon = () => {
     switch (scrollMode) {
       case 'vertical': return <Grid3x3 size={18} />;

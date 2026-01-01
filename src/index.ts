@@ -1,3 +1,5 @@
-import PDFViewer from "./PdfViewer";
-
-export default PDFViewer;
+export { default } from "./PDFViewer";
+export type {
+  PDFViewerProps,
+  ScrollMode,
+} from "./PDFViewer";
