@@ -1,5 +1,7 @@
+// src/index.ts
+import './index.css';
+
 export { default } from "./PDFViewer";
 export type {
-  PDFViewerProps,
-  ScrollMode,
+  PDFViewerProps
 } from "./PDFViewer";

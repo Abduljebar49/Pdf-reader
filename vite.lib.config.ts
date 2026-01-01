@@ -12,8 +12,6 @@ export default defineConfig({
       insertTypesEntry: true,
       rollupTypes: true,
     })
-
-
   ],
   css: {
     postcss: './postcss.config.js', // ✅ ensure Tailwind runs
