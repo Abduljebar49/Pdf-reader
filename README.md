@@ -37,16 +37,16 @@ A modern, feature-rich PDF viewer component built with React, TypeScript, and Vi
 ## 📦 Installation
 
 ```bash
-npm install @your-library/pdf-viewer
+npm install @abduljebar/pdf-viewer
 # or
-yarn add @your-library/pdf-viewer
+yarn add @abduljebar/pdf-viewer
 ```
 
 ## 🚀 Quick Start
 
 ```tsx
-import { PDFViewer } from '@your-library/pdf-viewer';
-import '@your-library/pdf-viewer/dist/style.css';
+import { PDFViewer } from '@abduljebar/pdf-viewer';
+import '@abduljebar/pdf-viewer/dist/style.css';
 
 function App() {
   return (
@@ -76,7 +76,7 @@ function App() {
 ### Basic Usage
 
 ```tsx
-import { PDFViewer } from '@your-library/pdf-viewer';
+import { PDFViewer } from '@abduljebar/pdf-viewer';
 
 function MyPDFViewer() {
   return (
